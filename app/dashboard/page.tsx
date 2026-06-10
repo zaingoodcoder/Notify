@@ -4,8 +4,9 @@ import { supabase } from "@/supabase/supabase";
 import { useState, useEffect } from "react";
 import type { User } from "@supabase/supabase-js";
 import { formatDate } from "@/helperfunc/formatDate";
+import Link from "next/link";
 
-type Note = {
+export type Note = {
   id: string;
   title: string;
   content: string;
@@ -181,20 +182,21 @@ const Dashboard = () => {
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {notes.map((note) => (
-              <article
-                key={note.id}
-                className="group cursor-pointer rounded-2xl border border-white/5 bg-zinc-900/60 p-5 transition-colors hover:border-indigo-500/25 hover:bg-indigo-500/5"
-              >
-                <h2 className="truncate font-semibold text-white group-hover:text-indigo-200">
-                  {note.title || "Untitled Note"}
-                </h2>
-                <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-zinc-500">
-                  {note.content || "No content yet..."}
-                </p>
-                <p className="mt-4 text-xs text-zinc-600">
-                  {formatDate(note.created_at)}
-                </p>
-              </article>
+              <Link key={note.id} href={`/notes/${note.id}`}>
+                <article
+                  className="group cursor-pointer rounded-2xl border border-white/5 bg-zinc-900/60 p-5 transition-colors hover:border-indigo-500/25 hover:bg-indigo-500/5"
+                >
+                  <h2 className="truncate font-semibold text-white group-hover:text-indigo-200">
+                    {note.title || "Untitled Note"}
+                  </h2>
+                  <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-zinc-500">
+                    {note.content || "No content yet..."}
+                  </p>
+                  <p className="mt-4 text-xs text-zinc-600">
+                    {formatDate(note.created_at)}
+                  </p>
+                </article>
+              </Link>
             ))}
           </div>
         )}

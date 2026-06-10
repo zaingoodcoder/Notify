@@ -78,3 +78,11 @@ a {
   animation: shimmer 3s linear infinite, pulse-glow 2.5s ease-in-out infinite;
 }
 
+.note-editor textarea {
+  min-height: 50vh;
+}
+
+.note-editor textarea::placeholder {
+  color: rgb(82 82 91);
+}
+
