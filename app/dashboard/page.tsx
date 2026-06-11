@@ -13,6 +13,9 @@ export type Note = {
   content: string;
   created_at: string;
   user_id: string;
+  editor_content : JSON;
+  is_favorite : boolean;
+  updated_at?: string;
 };
 
 const Dashboard = () => {
@@ -54,6 +57,21 @@ const Dashboard = () => {
 
     GetNote();
   }, [user]);
+
+
+  //favorite 
+  async function addToFavorites(noteId: string) {
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from("notes")
+      .update({
+        is_favorite: true,
+      })
+      .eq("id", noteId)
+      .select()
+      .single();
+  }
 
   async function addNote() {
     if (!user || !notename.trim()) return;
@@ -228,6 +246,7 @@ const Dashboard = () => {
                           {formatDate(note.created_at)}
                         </p>
                       </article>
+                      <button onClick={() => addToFavorites(note.id)} className="mt-4 text-sm text-yellow-500">Favorite</button>
                     </Link>
                   ))}
                 </div>

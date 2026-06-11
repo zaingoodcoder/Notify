@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -92,5 +93,90 @@ a {
 .dark .note-editor textarea::placeholder,
 .dark .note-editor input::placeholder {
   color: rgb(82 82 91);
+}
+
+/* Tiptap Task List Styles */
+.prose ul[data-type="taskList"] {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.prose ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.prose ul[data-type="taskList"] li > label {
+  margin-right: 0.75rem;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+
+.prose ul[data-type="taskList"] li > label input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: #6366f1; /* indigo-500 */
+  cursor: pointer;
+  border-radius: 0.25rem;
+  border: 1px solid #d1d5db;
+}
+
+.dark .prose ul[data-type="taskList"] li > label input[type="checkbox"] {
+  border-color: #4b5563;
+}
+
+.prose ul[data-type="taskList"] li > div {
+  flex: 1;
+}
+
+.prose ul[data-type="taskList"] li[data-checked="true"] > div {
+  text-decoration: line-through;
+  color: #71717a; /* text-zinc-500 */
+}
+
+/* Tiptap Links */
+.prose a {
+  color: #4f46e5;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.dark .prose a {
+  color: #818cf8;
+}
+.prose a:hover {
+  color: #4338ca;
+}
+.dark .prose a:hover {
+  color: #6366f1;
+}
+
+/* Tiptap Highlights */
+.prose mark {
+  background-color: #fef08a; /* yellow-200 */
+  color: #1c1917; /* stone-900 */
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.25rem;
+}
+.dark .prose mark {
+  background-color: #854d0e; /* yellow-800 */
+  color: #fef08a;
+}
+
+/* Placeholder support for Tiptap */
+.prose p.is-editor-empty:first-child::before {
+  color: #a1a1aa; /* zinc-400 */
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+.dark .prose p.is-editor-empty:first-child::before {
+  color: #52525b; /* zinc-600 */
 }
 
