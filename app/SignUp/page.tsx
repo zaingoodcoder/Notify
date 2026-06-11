@@ -1,78 +1,73 @@
 "use client";
 
-import { supabase } from '@/supabase/supabase';
-import { useState, type FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-
-
+import { supabase } from "@/supabase/supabase";
+import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Signup = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
+  const router = useRouter();
 
-    const router = useRouter();
+  async function handleSignup(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setMessage("");
 
-    async function handleSignup(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        setMessage("");
-
-        const trimmedEmail = email.trim();
-        if (!trimmedEmail || !password) {
-            setMessage("Please enter your email and password.");
-            return;
-        }
-
-        setLoading(true);
-
-        try {
-            const { data, error } = await supabase.auth.signUp({
-                email: trimmedEmail,
-                password,
-            });
-
-            if (error) {
-                setMessage(error.message);
-                console.error(error.message);
-                return;
-            }
-
-            setMessage(`Account created for ${data.user?.email ?? trimmedEmail}. Check your email to confirm.`);
-            console.log("user created", data);
-
-            router.replace('/');
-
-        } catch (err) {
-            setMessage(err instanceof Error ? err.message : "Something went wrong. Try again.");
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail || !password) {
+      setMessage("Please enter your email and password.");
+      return;
     }
 
+    setLoading(true);
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: trimmedEmail,
+        password,
+      });
+
+      if (error) {
+        setMessage(error.message);
+        console.error(error.message);
+        return;
+      }
+
+      setMessage(`Account created for ${data.user?.email ?? trimmedEmail}. Check your email to confirm.`);
+      console.log("user created", data);
+
+      router.replace("/");
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "Something went wrong. Try again.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <main className="relative flex min-h-[calc(100dvh-5rem)] flex-1 items-center justify-center overflow-hidden px-6 pt-20 pb-12">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(99,102,241,0.2),transparent)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_80%_60%,rgba(139,92,246,0.1),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(99,102,241,0.12),transparent)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(99,102,241,0.2),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_80%_60%,rgba(139,92,246,0.06),transparent)] dark:bg-[radial-gradient(ellipse_50%_40%_at_80%_60%,rgba(139,92,246,0.1),transparent)]" />
       </div>
 
       <div className="animate-fade-up relative z-10 w-full max-w-md">
-        <div className="rounded-2xl border border-white/10 bg-zinc-900/80 p-8 shadow-2xl shadow-indigo-500/10 backdrop-blur-xl">
+        <div className="rounded-2xl border border-zinc-200 bg-white/95 p-8 shadow-2xl shadow-indigo-500/10 backdrop-blur-xl dark:border-white/10 dark:bg-zinc-900/80">
           <div className="mb-8 text-center">
-            <h1 className="text-2xl font-bold tracking-tight text-white">Sign Up</h1>
-            <p className="mt-2 text-sm text-zinc-400">
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">Sign Up</h1>
+            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
               Create your account and start organizing your thoughts.
             </p>
           </div>
-          
+
           <form className="space-y-5" onSubmit={handleSignup}>
             <div>
-              <label htmlFor="signup-email" className="mb-1.5 block text-sm font-medium text-zinc-300">
+              <label htmlFor="signup-email" className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
                 Email
               </label>
               <input
@@ -82,12 +77,12 @@ const Signup = () => {
                 type="email"
                 autoComplete="email"
                 placeholder="you@example.com"
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-zinc-500 transition-colors outline-none focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20"
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 transition-colors outline-none focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-zinc-500"
               />
             </div>
 
             <div>
-              <label htmlFor="signup-password" className="mb-1.5 block text-sm font-medium text-zinc-300">
+              <label htmlFor="signup-password" className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
                 Password
               </label>
               <input
@@ -97,12 +92,12 @@ const Signup = () => {
                 type="password"
                 autoComplete="new-password"
                 placeholder="Enter your password"
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-zinc-500 transition-colors outline-none focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20"
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 transition-colors outline-none focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-zinc-500"
               />
             </div>
 
             {message ? (
-              <p className="text-sm text-indigo-300" role="status">
+              <p className="text-sm text-indigo-600 dark:text-indigo-300" role="status">
                 {message}
               </p>
             ) : null}
@@ -115,21 +110,18 @@ const Signup = () => {
               >
                 {loading ? "Signing up..." : "Sign up"}
               </button>
-                <button
-                    type="button"
-                    className="flex-1 rounded-xl border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-zinc-300 transition-all hover:border-white/20 hover:bg-white/10 hover:text-white active:scale-95"
-                >
-                    <Link href="/LogIn">
-                    
-                        Log in
-                    </Link>
-                </button>  
+              <button
+                type="button"
+                className="flex-1 rounded-xl border border-zinc-200 bg-zinc-50 px-6 py-3 text-sm font-semibold text-zinc-700 transition-all hover:border-zinc-300 hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-white/10 dark:bg-white/5 dark:text-zinc-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-white"
+              >
+                <Link href="/LogIn">Log in</Link>
+              </button>
             </div>
           </form>
         </div>
       </div>
     </main>
   );
-}
+};
 
 export default Signup;
